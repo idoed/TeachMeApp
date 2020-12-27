@@ -1,59 +1,57 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import './studentOrTeacher.dart';
+import './login.dart';
+import './logo.dart';
+import './register.dart';
 import './DataBaseHelper/Auth.dart';
-import './question.dart';
-import './answer.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-
-    // TODO: implement createState
-    return _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'TeachMe',
+      home: MyHomePage(),
+    );
   }
 }
 
-//underscore '_' befre the class\function\property name = private
-class _MyAppState extends State<MyApp> {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-  final AuthService _auth= AuthService();
-  int _questionIndex = 0;
-  //we cannot place functions here since build is being called,
-  //so functions declared here would not be known to the compiler
-  void _function() {
-    print('Answer Chosen');
-  }
-
-  void _rolePicked() {
-    print('role picked');
+class _MyHomePageState extends State<MyHomePage> {
+  String page = 'login';
+  void togglePage(String newPage) {
+    setState(() {
+      page = newPage;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Firebase.initializeApp();
-    return MaterialApp(
-
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('TeachMe'),
-          ),
-          body: Column(
-            // arranges the children array in a column - invisible Widget
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('TeachMe'),
+      ),
+      body: ListView(children: <Widget>[
+        Container(
+          child: Column(
             children: [
-              //now we can use Question class instead of Text (not that useful here):
-              // Text(questions[_questionIndex]),
-              Question('Who are you?'),
-              Answer('Student', _rolePicked),
-              Answer('Teacher', _rolePicked),
-              Answer('signInAnony',_auth.signInAnon)
+              Logo(),
+              if (page == 'register') Register(togglePage),
+              if (page == 'login') Login(togglePage)
             ],
-          )),
+          ),
+        ),
+      ]),
     );
   }
 }
