@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'DataBaseHelper/Auth.dart';
@@ -10,6 +11,8 @@ class Register extends StatelessWidget {
 
   var passwordsMismatch = false;
   final Function togglePage;
+  User user;
+
   void loginRequest(String username, String password1, String password2) {
     if (password1 != password2) {
       passwordsMismatch = true;
@@ -66,10 +69,11 @@ class Register extends StatelessWidget {
                         color: Colors.blue,
                         textColor: Colors.white,
                         onPressed: () => {
-                              (loginRequest(
+                              togglePage('profile'),
+                              loginRequest(
                                   userNameController.text,
                                   passwrodController1.text,
-                                  passwrodController2.text)),
+                                  passwrodController2.text),
                             },
                         child: Text('הירשם')),
                   )

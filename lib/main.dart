@@ -3,6 +3,7 @@ import './studentOrTeacher.dart';
 import './login.dart';
 import './logo.dart';
 import './register.dart';
+import './profile.dart';
 import './DataBaseHelper/Auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -29,6 +30,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String page = 'login';
+
   void togglePage(String newPage) {
     setState(() {
       page = newPage;
@@ -45,9 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
         Container(
           child: Column(
             children: [
-              Logo(),
+              // Logo(),
+              if (page == 'login') Login(togglePage),
               if (page == 'register') Register(togglePage),
-              if (page == 'login') Login(togglePage)
+              if (page == 'profile') Profile(togglePage),
+              FlatButton(
+                onPressed: () => togglePage('login'),
+                child: Text('חזור'),
+              ),
             ],
           ),
         ),
